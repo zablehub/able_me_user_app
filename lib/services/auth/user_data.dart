@@ -116,6 +116,7 @@ class UserDataApi extends Network {
         if (response.statusCode == 200) {
           Fluttertoast.showToast(msg: "Notification Enabled");
         }
+        print("FCM ADD : ${response.statusCode}");
         return;
       });
     } catch (e, s) {

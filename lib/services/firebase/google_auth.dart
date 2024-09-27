@@ -45,7 +45,7 @@ mixin class GoogleAuth {
         if (firebaseUser != null) {
           String? token = await firebaseUser.getIdToken();
           if (token != null) {
-            await _cacher.setFirebaseAccessToken(token);
+            await _cacher.setFirebaseAccessToken(googleAuth.accessToken!);
           }
           await _cacher.signInMethod(1);
         }

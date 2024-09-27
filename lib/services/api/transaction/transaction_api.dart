@@ -18,6 +18,20 @@ class TransactionApi extends Network {
   //         HttpHeaders.authorizationHeader: "Bearer $_accessToken"
   //       });
   // }
+  Future<bool> updateStatus(int id, {required int status}) async {
+    try {
+      final response = await http.post(
+          '${endpoint}booking/$id/update-transactions-status?status=$status'
+              .toUri,
+          headers: {
+            "Accept": "application/json",
+            HttpHeaders.authorizationHeader: "Bearer $_accessToken"
+          });
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
 
   Future<List<TransactionOrder>> getTransactionHistory(
       {required int myID, List<int>? statuses}) async {

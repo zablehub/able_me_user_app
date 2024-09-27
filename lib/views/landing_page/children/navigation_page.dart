@@ -204,21 +204,26 @@ class _NavigationPageState extends ConsumerState<NavigationPage>
       // if (token == null) {
       //   context.replaceNamed('/');
       // }
-      await getUserData().then((value) {
+      await getUserData().then((value) async {
         ref.read(currentUser.notifier).update((state) => value);
         setState(() {
           udata = value;
         });
-
+        print("USER : $value");
         if (value == null) {
           Fluttertoast.showToast(msg: "Account is incomplete");
 
           return;
         }
         _vm.updateID(value.id);
+        await _FCM.init(value.id).then((v) async {
+          if (!v) return;
+          _FCM.handleOnMessage(context, ref);
+          _FCM.handleOnMessageOpened(ref);
+        });
       });
-      await _FCM.init();
       await initialize(0);
+
       // await initAssistant();
     });
     super.initState();
@@ -378,6 +383,7 @@ class _NavigationPageState extends ConsumerState<NavigationPage>
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     children: [
                       PromotionalDisplay(),
+
                       const OnGoingTransactions(),
 
                       const Gap(20),

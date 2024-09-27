@@ -11,9 +11,12 @@ import 'package:able_me/models/rider_booking/location_combo.dart';
 import 'package:able_me/models/rider_booking/search_driver_config.dart';
 import 'package:able_me/models/rider_booking/vehicle.dart';
 import 'package:able_me/models/search_for_driver.dart';
+import 'package:able_me/models/user_model.dart';
 import 'package:able_me/services/api/booking/transportation.dart';
+import 'package:able_me/services/api/notification.dart';
 import 'package:able_me/services/firebase/google_api_matrix.dart';
 import 'package:able_me/services/geocoder_services/geocoder.dart';
+import 'package:able_me/view_models/auth/user_provider.dart';
 import 'package:able_me/view_models/notifiers/my_booking_history_notifier.dart';
 import 'package:able_me/views/landing_page/children/home_page_components/ride_chosen/pickup_and_destination_map.dart';
 import 'package:able_me/views/landing_page/children/transportation_page_components/listing_drivers.dart';
@@ -48,6 +51,7 @@ class _FullCreateOfferPageState extends ConsumerState<FullCreateOfferPage>
     size: context.csize!.height * .65,
   );
   late final double baseFare = FareCalculation.getRate();
+  final NotificationApi _notificationApi = NotificationApi();
   // late double distance = 0.0;
   DistanceMatrix? matrix;
   final GoogleApiMatrix _apiMatrix = GoogleApiMatrix();
@@ -497,6 +501,8 @@ class _FullCreateOfferPageState extends ConsumerState<FullCreateOfferPage>
                                         ? destination == null
                                             ? null
                                             : () async {
+                                                final UserModel? user =
+                                                    ref.watch(currentUser);
                                                 // setS
                                                 // final BookingPayload? data =
                                                 //     _bKey.currentState!.getAllData(
@@ -536,6 +542,14 @@ class _FullCreateOfferPageState extends ConsumerState<FullCreateOfferPage>
                                                 }
                                                 ref.invalidate(
                                                     userBookingHistory);
+                                                await _notificationApi.send(
+                                                    receiverID: chosenVehicle!
+                                                        .driver.id,
+                                                    title: 'New Booking',
+                                                    body:
+                                                        '${user!.name} wants to book a ride with you',
+                                                    type: 'update-booking',
+                                                    isUrgent: false);
                                                 _isLoading = false;
                                                 if (mounted) setState(() {});
                                                 // ignore: use_build_context_synchronously

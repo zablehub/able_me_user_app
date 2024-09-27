@@ -158,13 +158,13 @@
             android:value="AIzaSyBGnzS61Ka4lQ87GKtNLSDh9HM_9Yyur4w"/> -->
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDiFqcWLxbap6-ebcrldZm48WKcVT-7am0"/>
         <!-- <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" /> -->
-        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+        <!-- <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
             </intent-filter>
-        </receiver>
+        </receiver> -->
     </application>
 </manifest>

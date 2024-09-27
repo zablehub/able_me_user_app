@@ -174,7 +174,7 @@ class _PickupAndDestMapState extends ConsumerState<PickupAndDestMap>
                   userLoc!.latitude,
                   userLoc.longitude,
                 ),
-          zoom: 15,
+          zoom: 20,
         ),
         onMapCreated: (GoogleMapController controller) async {
           _controller.complete(controller);

@@ -4,6 +4,8 @@ import 'package:able_me/helpers/geo_point_ext.dart';
 import 'package:able_me/models/geocoder/coordinates.dart';
 import 'package:able_me/models/geocoder/geoaddress.dart';
 import 'package:able_me/models/user_model.dart';
+import 'package:able_me/services/auth/user_data.dart';
+import 'package:able_me/services/firebase/google_auth.dart';
 import 'package:able_me/services/firebase/user_location_service.dart';
 import 'package:able_me/services/geocoder_services/geocoder.dart';
 import 'package:able_me/services/geolocation_service.dart';
@@ -11,16 +13,19 @@ import 'package:able_me/view_models/app/coordinate.dart';
 import 'package:able_me/view_models/auth/user_provider.dart';
 import 'package:able_me/view_models/notifiers/current_address_notifier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:able_me/services/app_src/data_cacher.dart';
 
-class AbleLocationPermission with GeoLocationService {
+class AbleLocationPermission with GeoLocationService, GoogleAuth {
   static final UserLocationFirebaseService _locationFirebaseService =
       UserLocationFirebaseService();
   AbleLocationPermission._pr();
+  final UserDataApi _api = UserDataApi();
   static final DataCacher _cacher = DataCacher.instance;
   static WidgetRef? ref;
   static final AbleLocationPermission _instance = AbleLocationPermission._pr();
@@ -95,12 +100,12 @@ class AbleLocationPermission with GeoLocationService {
       ),
       _currentUser,
     );
-    String? firebaseAccessToken = await user.getIdToken();
-    if (firebaseAccessToken == null) return;
-    print(firebaseAccessToken);
-    await _cacher.setFirebaseAccessToken(firebaseAccessToken);
-    // hasListened = false;
-
-    // if (mounted) setState(() {});
   }
 }
+
+// void printWrapped(String text) {
+//   final pattern = RegExp('.{1,900}'); // Adjust the length as needed
+//   pattern.allMatches(text).forEach((match) {
+//     print(match.group(0));
+//   });
+// }

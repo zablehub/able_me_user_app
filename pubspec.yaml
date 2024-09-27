@@ -83,8 +83,8 @@ dependencies:
   url_launcher: ^6.3.0
   flutter_widget_from_html: ^0.15.1
   flutter_stripe: ^11.1.0
-  flutter_local_notifications: ^17.2.2
   pay: ^2.0.0
+  notify_inapp: ^0.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

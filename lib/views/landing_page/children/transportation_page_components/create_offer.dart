@@ -46,14 +46,12 @@ class _CreateBookingDisplayState extends ConsumerState<CreateBookingDisplay>
         final List<GeoAddress> addresses =
             await Geocoder.google().findAddressesFromGeoPoint(pickupLocation);
         _pickupLocation.text = addresses.first.addressLine ?? "";
-        print("FF");
       } else {
         Fluttertoast.showToast(msg: "Please enable location");
       }
     } else {
       pickupLocation = address.coordinates;
       _pickupLocation.text = address.addressLine;
-      print("F");
     }
 
     if (mounted) setState(() {});

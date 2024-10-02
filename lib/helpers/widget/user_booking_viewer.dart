@@ -4,6 +4,7 @@ import 'package:able_me/helpers/context_ext.dart';
 import 'package:able_me/helpers/date_ext.dart';
 import 'package:able_me/helpers/string_ext.dart';
 import 'package:able_me/helpers/widget/image_builder.dart';
+import 'package:able_me/helpers/widget/user_booking_widgets/user_booking_details_sheet.dart';
 import 'package:able_me/view_models/notifiers/my_booking_history_notifier.dart';
 import 'package:able_me/views/widget_components/promotional_display.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +59,19 @@ class _UserBookingViewerState extends ConsumerState<UserBookingViewer>
                 height: 150,
                 child: CarouselView(
                     itemExtent: context.csize!.width - 40,
-                    onTap: (i) {
-                      print("TAPPED : ${data[i].country}");
+                    onTap: (i) async {
+                      await showModalBottomSheet(
+                        context: context,
+                        isDismissible: true,
+                        isScrollControlled: true,
+                        barrierColor: Colors.black.withOpacity(.5),
+                        barrierLabel: "",
+                        backgroundColor: bgColor,
+                        builder: (_) => UserBookingDetailsSheet(
+                          data: data[i],
+                        ),
+                      );
+                      // print("TAPPED : ${data[i].country}");
                     },
                     controller: CarouselController(),
                     scrollDirection: Axis.horizontal,

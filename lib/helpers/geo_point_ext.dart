@@ -70,13 +70,19 @@ extension EXT on GeoPoint {
   }
 
   String calculateETA(GeoPoint point) {
-    final double upperSpeed = 50; //50 kph
-    final double lowerSpeed = 30; //50 kph
+    const double upperSpeed = 50; //50 kph
+    const double lowerSpeed = 30; //30 kph
     final double dstance = calculateDistance(point);
     final minETA = (dstance / upperSpeed) * 60; // Convert to minutes
     final maxETA = (dstance / lowerSpeed) * 60; // Convert to minutes
     // print("DISTANCE : $dstance");
     return '${minETA.round()}-${maxETA.round()} min${minETA > 1 ? "s" : ""}'; // ETA in hours
+  }
+
+  double calculateETAMinutes(GeoPoint point, {double speed = 20}) {
+    final double dstance = calculateDistance(point);
+    final eta = (dstance / speed) * 60;
+    return eta;
   }
 }
 

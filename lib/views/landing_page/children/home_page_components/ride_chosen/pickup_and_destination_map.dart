@@ -217,7 +217,10 @@ class _PickupAndDestMapState extends ConsumerState<PickupAndDestMap>
                     userLoc.longitude,
                   )
           ]);
-          CameraUpdate cu = CameraUpdate.newLatLngBounds(f, 120);
+          final double padding =
+              20.0; // Base padding, can be adjusted as needed
+          final double dynamicPadding = padding + (widget.size * 0.15);
+          CameraUpdate cu = CameraUpdate.newLatLngBounds(f, dynamicPadding);
           await controller.animateCamera(cu);
         },
         markers: {

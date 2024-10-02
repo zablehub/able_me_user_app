@@ -13,4 +13,4 @@ final currentUser = StateProvider<UserModel?>(
 );
 
 final accessTokenProvider = StateProvider<String?>((ref) => null);
-final notificationProvider = StateProvider<String?>((ref) => null);
+final notificationProvider = StateProvider<bool>((ref) => false);

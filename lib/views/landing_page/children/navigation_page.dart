@@ -1,36 +1,22 @@
-import 'dart:io';
 import 'package:able_me/app_config/palette.dart';
 import 'package:able_me/helpers/auth/auth_helper.dart';
-import 'package:able_me/helpers/color_ext.dart';
 import 'package:able_me/helpers/context_ext.dart';
-import 'package:able_me/helpers/geo_point_ext.dart';
 import 'package:able_me/helpers/string_ext.dart';
 import 'package:able_me/helpers/widget/image_builder.dart';
 import 'package:able_me/helpers/widget/user_booking_viewer.dart';
-import 'package:able_me/models/geocoder/coordinates.dart';
-import 'package:able_me/models/geocoder/geoaddress.dart';
-import 'package:able_me/models/rider_booking/search_driver_config.dart';
 import 'package:able_me/models/user_model.dart';
-import 'package:able_me/services/app_src/speech_recognition_v2.dart';
 import 'package:able_me/services/firebase/firebase_messaging.dart';
 import 'package:able_me/services/firebase/user_location_service.dart';
-import 'package:able_me/services/geocoder_services/geocoder.dart';
-import 'package:able_me/services/geolocation_service.dart';
 import 'package:able_me/services/permission/location_permission.dart';
-import 'package:able_me/view_models/app/coordinate.dart';
 import 'package:able_me/view_models/auth/user_provider.dart';
 import 'package:able_me/view_models/booking_payload_vm.dart';
 import 'package:able_me/view_models/notifiers/current_address_notifier.dart';
-import 'package:able_me/view_models/notifiers/user_location_state_notifier.dart';
 import 'package:able_me/view_models/theme_provider.dart';
 import 'package:able_me/views/landing_page/children/blogs_page_components/main_blogs_page.dart';
-import 'package:able_me/views/landing_page/children/history_page.dart';
 import 'package:able_me/views/landing_page/children/medicine_page_components/main_medicine_page.dart';
-import 'package:able_me/views/landing_page/children/profile_page.dart';
 import 'package:able_me/views/landing_page/children/restaurant_page_components/main_restaurant_page.dart';
 import 'package:able_me/views/landing_page/children/transportation_page_components/ask_booking.dart';
 import 'package:able_me/views/landing_page/children/transportation_page_components/create_offer.dart';
-import 'package:able_me/views/landing_page/children/transportation_page_components/go_to_places.dart';
 import 'package:able_me/views/landing_page/children/transportation_page_components/main_transportation_page.dart';
 import 'package:able_me/views/landing_page/children/transportation_page_components/transaction/recent_transaction_viewer.dart';
 import 'package:able_me/views/landing_page/children/transportation_page_components/visit_suggested_place.dart';
@@ -40,13 +26,11 @@ import 'package:able_me/views/widget_components/promotional_display.dart';
 import 'package:able_me/views/widget_components/searched_drivers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -84,38 +68,11 @@ class _NavigationPageState extends ConsumerState<NavigationPage>
     ),
     const MainBlogPage()
   ];
+  Future<bool> isNotificationEnabled() async {
+    final bool isGranted = await Permission.notification.isGranted;
 
-  // Future<void> receivedValue(Position p) async {
-  // Position? pos = ref.read(coordinateProvider);
-
-  //   final bool isNew = pos == null;
-  //   if (pos == null) {
-  //     pos = p;
-  //     if (mounted) setState(() {});
-  //   }
-  //   final double dist =
-  //       distance(pos.latitude, pos.longitude, p.latitude, p.longitude);
-  //   ref.read(coordinateProvider.notifier).update((state) => p);
-
-  //   if ((dist * 1000) < (Platform.isAndroid ? 2 : 1) && !isNew) return;
-
-  //   final User? user = FirebaseAuth.instance.currentUser;
-  //   final UserModel? _currentUser = ref.watch(currentUser);
-
-  //   if (user == null || _currentUser == null) return;
-
-  //   _locationFirebaseService.updateOrCreateUserLocation(
-  //     user,
-  //     Coordinates(
-  //       pos.latitude,
-  //       pos.longitude,
-  //     ),
-  //     _currentUser,
-  //   );
-  //   hasListened = false;
-
-  //   if (mounted) setState(() {});
-  // }
+    return isGranted;
+  }
 
   Future<void> initAssistant() async {
     // await _myAssistant.initialize();
@@ -132,66 +89,6 @@ class _NavigationPageState extends ConsumerState<NavigationPage>
         .onRestrictedCallback(_locationPermission.onPermanentlyDeniedCallback)
         .onProvisionalCallback(_locationPermission.onGrantedCallback)
         .request();
-    // final bool isGranted = await Permission.location.request().isGranted;
-    // if (isGranted) {
-    //   // Use location.
-    //   final LocationPermission permission = await Geolocator.checkPermission();
-    // if (permission == LocationPermission.always ||
-    //     permission == LocationPermission.whileInUse) {
-    //     await Geolocator.getCurrentPosition().then((v) async {
-    //       // await receivedValue(v);
-    //       if (mounted) setState(() {});
-    //       _vm.updatePickupLocation(v.toGeoPoint());
-    //       final List<GeoAddress> address =
-    //           await Geocoder.google().findAddressesFromGeoPoint(v.toGeoPoint());
-    //       if (address.isNotEmpty) {
-    //         ref
-    //             .read(currentAddressNotifier.notifier)
-    //             .update((state) => CurrentAddress(
-    //                   addressLine: address.first.addressLine ?? "",
-    //                   city: address.first.adminAreaCode ?? "", // state
-    //                   coordinates: v.toGeoPoint(),
-    //                   locality: address.first.locality ?? "", //city
-    //                   countryCode: address.first.countryCode ?? "",
-    //                 ));
-    //       }
-    //     });
-    //     // Geolocator.getPositionStream().listen((event) async {
-    //     //   if (udata != null) {
-    //     //     print('fetch');
-    //     //     _service
-    //     //         .driverLocationCollectionStream(udata!, event)
-    //     //         .listen((event) {
-    //     //       ref.watch(userLocationProvider.notifier).update(event);
-    //     //     });
-
-    //     //     hasListened = true;
-    //     //     if (mounted) setState(() {});
-    //     //   }
-    //     //   _vm.updatePickupLocation(event.toGeoPoint());
-    //     //   await receivedValue(event);
-    //     // });
-    //   } else {
-    //     final LocationPermission perm = await Geolocator.requestPermission();
-    //     if (perm == LocationPermission.always ||
-    //         perm == LocationPermission.whileInUse) {
-    //       await initialize(time++);
-    //     } else {
-    //       await Fluttertoast.showToast(
-    //         msg: "Please enable location permission to use the app",
-    //       );
-    //       if (time > 1) {
-    //         if (Platform.isAndroid) {
-    //           SystemNavigator.pop();
-    //         } else if (Platform.isIOS) {
-    //           exit(0);
-    //         }
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   // openAppSettings();
-    // }
   }
 
   final BookingPayloadVM _vm = BookingPayloadVM.instance;
@@ -200,10 +97,6 @@ class _NavigationPageState extends ConsumerState<NavigationPage>
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // final String? token = ref.read(accessTokenProvider.notifier).state;
-      // if (token == null) {
-      //   context.replaceNamed('/');
-      // }
       await getUserData().then((value) async {
         ref.read(currentUser.notifier).update((state) => value);
         setState(() {
@@ -216,11 +109,19 @@ class _NavigationPageState extends ConsumerState<NavigationPage>
           return;
         }
         _vm.updateID(value.id);
-        await _FCM.init(value.id).then((v) async {
-          if (!v) return;
-          _FCM.handleOnMessage(context, ref);
-          _FCM.handleOnMessageOpened(ref);
-        });
+
+        final bool _isNotificationEnabled = await isNotificationEnabled();
+        print("NOTIFICATION PERMSSION : ${_isNotificationEnabled}");
+        ref
+            .read(notificationProvider.notifier)
+            .update((s) => _isNotificationEnabled);
+        if (_isNotificationEnabled) {
+          await _FCM.init(value.id).then((v) async {
+            if (!v) return;
+            _FCM.handleOnMessage(context, ref);
+            _FCM.handleOnMessageOpened(ref);
+          });
+        }
       });
       await initialize(0);
 

@@ -95,12 +95,24 @@ class FirebaseMessagingServices {
       badge: true,
       sound: true,
     );
+    await requestToken();
+  }
+
+  requestToken() async {
     String? token = await _firebase.getToken();
     if (token != null) {
       await _api.addFCMToken(token);
       await _cacher.saveFcmToken(token);
       print("FCM TOKEN : $token");
       // listen();
+    }
+  }
+
+  revokeFcmToken() async {
+    final String? fcmToken = _cacher.getFcmToken();
+    if (fcmToken != null) {
+      await _firebase.deleteToken();
+      await _cacher.removeFcmToken();
     }
   }
 

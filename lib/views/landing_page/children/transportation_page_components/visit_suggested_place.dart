@@ -77,9 +77,42 @@ class _VisitSuggestedPlaceState extends State<VisitSuggestedPlace>
                           padding: const EdgeInsets.all(20),
                           // alignment: Alignment.centerLeft,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      place.name,
+                                      style: TextStyle(
+                                        fontFamily: "Lokanova",
+                                        color: Colors.white,
+                                        // fontWeight: FontWeight.w600,
+                                        height: 1,
+                                        fontSize: context.theme.textTheme
+                                                .headlineLarge!.fontSize! +
+                                            2,
+                                      ),
+                                    ),
+                                    // const Gap(10),
+                                    Text(
+                                      place.locationText,
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(.5),
+                                        fontWeight: FontWeight.w600,
+                                        height: 1,
+                                        fontSize: context.theme.textTheme
+                                            .bodyMedium!.fontSize!,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Gap(10),
                               Row(
                                 children: [
                                   VisitEtaWidget(
@@ -134,40 +167,9 @@ class _VisitSuggestedPlaceState extends State<VisitSuggestedPlace>
                                   )
                                 ],
                               ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        place.name,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          height: 1,
-                                          fontSize: context.theme.textTheme
-                                                  .headlineLarge!.fontSize! +
-                                              2,
-                                        ),
-                                      ),
-                                      const Gap(10),
-                                      Text(
-                                        place.locationText,
-                                        style: TextStyle(
-                                          color: Colors.white.withOpacity(.5),
-                                          fontWeight: FontWeight.w600,
-                                          height: 1,
-                                          fontSize: context.theme.textTheme
-                                              .bodyMedium!.fontSize!,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
+                              // Expanded(
+                              //   child:
+                              // )
                             ],
                           ),
                         ),

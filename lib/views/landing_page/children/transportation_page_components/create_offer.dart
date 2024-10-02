@@ -17,6 +17,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CreateBookingDisplay extends ConsumerStatefulWidget {
   const CreateBookingDisplay({super.key, this.showDetails = true});
@@ -34,6 +35,12 @@ class _CreateBookingDisplayState extends ConsumerState<CreateBookingDisplay>
   late GeoPoint pickupLocation;
   final GlobalKey<FormState> _kForm = GlobalKey<FormState>();
   GeoPoint? destination;
+  Future<bool> isRejected() async {
+    final bool denied = await Permission.location.isDenied;
+    final bool isRestricted = await await Permission.location.isRestricted;
+    return denied || isRestricted;
+  }
+
   myListener(CurrentAddress? address) async {
     if (address == null) {
       final LocationPermission permission = await Geolocator.checkPermission();
@@ -187,6 +194,16 @@ class _CreateBookingDisplayState extends ConsumerState<CreateBookingDisplay>
                                     ? "Field is required"
                                     : null,
                             onTap: () async {
+                              final bool permissionRejected =
+                                  await isRejected();
+                              if (permissionRejected) {
+                                await Permission.location
+                                    .onDeniedCallback(() async {
+                                  await openAppSettings();
+                                }).request();
+                                // Fluttertoast.showToast(msg: msg)
+                                return;
+                              }
                               final GeoPoint? result =
                                   await Navigator.of(context).push<GeoPoint>(
                                 MaterialPageRoute(
@@ -258,6 +275,16 @@ class _CreateBookingDisplayState extends ConsumerState<CreateBookingDisplay>
                                     : null,
                             controller: _dest,
                             onTap: () async {
+                              final bool permissionRejected =
+                                  await isRejected();
+                              if (permissionRejected) {
+                                await Permission.location
+                                    .onDeniedCallback(() async {
+                                  await openAppSettings();
+                                }).request();
+                                // Fluttertoast.showToast(msg: msg)
+                                return;
+                              }
                               final GeoPoint? result =
                                   await Navigator.of(context).push<GeoPoint>(
                                 MaterialPageRoute(

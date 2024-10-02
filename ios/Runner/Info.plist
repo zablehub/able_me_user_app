@@ -49,15 +49,29 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Able me requires this device to grant access to camera for user experience</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Able me requires this device to grant access to location for a better user experience</string>
+	<string>Able me requires this device to grant access to camera for user experience.</string>
+	<key>NSSiriUsageDescription</key>
+	<string>This app uses Siri to enable voice commands and enhance your user experience.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Able me requires this device to grant access to location when in use for a better user experience</string>
+	<string>Able me requires this device to grant access to location for a better user experience.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This app requires Bluetooth access to connect with nearby devices and provide seamless interactions.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs location access to offer personalized services based on your current location, even in the background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Able me requires this device to grant access to location for a better user experience.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>This app uses motion data to track your activity and provide insights into your fitness and health.</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app requires access to your Apple Music library to provide personalized music recommendations and enhance your listening experience.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to the microphone to recognize speech.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Able me requires this device to grant access to photo album for a better user experience</string>
+	<string>Able me requires this device to grant access to the photo album for a better user experience.</string>
+
+	<key>NSContactsUsageDescription</key>
+	<string>This app requires access to your contacts to help you connect with friends and manage your social interactions more effectively.</string>
+
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>We need access to speech recognition services.</string>
 	<key>PermissionGroupNotification</key>

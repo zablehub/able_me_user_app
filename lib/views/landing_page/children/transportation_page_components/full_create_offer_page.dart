@@ -539,17 +539,18 @@ class _FullCreateOfferPageState extends ConsumerState<FullCreateOfferPage>
                                                 if (isBooked) {
                                                   Fluttertoast.showToast(
                                                       msg: "Booked to rider");
+                                                  ref.invalidate(
+                                                      userBookingHistory);
+                                                  await _notificationApi.send(
+                                                      receiverID: chosenVehicle!
+                                                          .driver.id,
+                                                      title: 'New Booking',
+                                                      body:
+                                                          '${user!.name} wants to book a ride with you',
+                                                      type: 'update-booking',
+                                                      isUrgent: false);
                                                 }
-                                                ref.invalidate(
-                                                    userBookingHistory);
-                                                await _notificationApi.send(
-                                                    receiverID: chosenVehicle!
-                                                        .driver.id,
-                                                    title: 'New Booking',
-                                                    body:
-                                                        '${user!.name} wants to book a ride with you',
-                                                    type: 'update-booking',
-                                                    isUrgent: false);
+
                                                 _isLoading = false;
                                                 if (mounted) setState(() {});
                                                 // ignore: use_build_context_synchronously

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:able_me/helpers/string_ext.dart';
@@ -18,7 +19,7 @@ class NotificationApi with Network {
       required bool isUrgent}) async {
     try {
       return await http
-          .post("${endpoint}notification/user/send".toUri, headers: {
+          .post("${endpoint}notification/user/multiple-send".toUri, headers: {
         "Accept": "application/json",
         HttpHeaders.authorizationHeader: "Bearer $accessToken"
       }, body: {
@@ -26,18 +27,19 @@ class NotificationApi with Network {
         "title": title,
         "content": body,
         "type": type,
-        "is_urgent": isUrgent,
+        "is_urgent": isUrgent ? "1" : "0",
       }).then((response) {
+        var data = json.decode(response.body);
         if (response.statusCode == 200) {
-          // var data = json.decode(response.body);
           //
-          print("MESSAGE SENT!");
+          print("MESSAGE SENT! : $data");
           // return BookRiderDetails.fromJson(data);
         }
+        print(data);
         return null;
       });
     } catch (e, s) {
-      print("MESSAGE SENDING FAILED");
+      print("MESSAGE SENDING FAILED : $e $s");
       return;
     }
   }

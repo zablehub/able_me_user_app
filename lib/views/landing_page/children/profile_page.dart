@@ -110,8 +110,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   image: DecorationImage(
-                    image: const NetworkImage(
-                      "https://img.jagranjosh.com/images/2023/June/962023/students-with-disabilities.webp",
+                    image: const AssetImage(
+                      "assets/images/food1.jpg",
                     ),
                     colorFilter: ColorFilter.mode(
                         Colors.black.withOpacity(.5), BlendMode.srcATop),
